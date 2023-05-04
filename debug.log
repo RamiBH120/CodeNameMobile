@@ -1,0 +1,8 @@
+[0504/210647.346:INFO:CONSOLE(2)] "JQMIGRATE: Migrate is installed, version 3.4.0", source: https://www.codenameone.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.0 (2)
+[0504/210721.750:INFO:CONSOLE(2)] "JQMIGRATE: Migrate is installed, version 3.4.0", source: https://www.codenameone.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.0 (2)
+[0504/230711.180:INFO:CONSOLE(2050)] "Uncaught TypeError: Sfjs.createFilters is not a function", source: https://cn1app/streams/1 (2050)
+[0504/230712.604:INFO:CONSOLE(0)] "Access to XMLHttpRequest at 'http://localhost:8000/_wdt/490f42' from origin 'https://cn1app' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.", source: https://cn1app/streams/1 (0)
+[0504/231457.859:INFO:CONSOLE(13)] "CheckoutInitError: apiKey is not set", source: https://cn1app/streams/1 (13)
+[0504/231911.957:INFO:CONSOLE(13)] "CheckoutInitError: apiKey is not set", source: https://cn1app/streams/1 (13)
+[0504/232135.267:INFO:CONSOLE(13)] "CheckoutInitError: apiKey is not set", source: https://cn1app/streams/1 (13)
+[0504/232158.456:INFO:CONSOLE(13)] "CheckoutInitError: apiKey is not set", source: https://cn1app/streams/2 (13)
