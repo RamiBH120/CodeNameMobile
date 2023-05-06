@@ -5,6 +5,7 @@ import java.util.Date;
 public class Abonnement {
 
     private int id;
+    private int idoffre;
     private String type;
     private float prix;
     private Date dateDebut;
@@ -12,8 +13,9 @@ public class Abonnement {
     private String user;
     private String offre;
 
-    public Abonnement(int id, String type, float prix, Date dateDebut, Date dateFin, String user, String offre) {
+    public Abonnement(int id,int idoffre, String type, float prix, Date dateDebut, Date dateFin, String user, String offre) {
         this.id = id;
+        this.idoffre = idoffre;
         this.type = type;
         this.prix = prix;
         this.dateDebut = dateDebut;
@@ -40,6 +42,14 @@ public class Abonnement {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdoffre() {
+        return idoffre;
+    }
+
+    public void setIdoffre(int idoffre) {
+        this.idoffre = idoffre;
     }
 
     public String getType() {

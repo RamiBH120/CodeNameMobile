@@ -16,13 +16,12 @@ public class AbonnementForm extends Form {
         });
 
         add(new Label("Choisir une option"));
-        Button btnAddTask = new Button("Mon abonnement");
-        Button btnListTasks = new Button("List des offres");
+        Button btnMonAbonnement = new Button("Mon abonnement");
+        Button btnListOffres = new Button("List des offres");
 
-        //getToolbar().addCommandToSideMenu("Mon abonnement", null, ev->{ new Form1(this).show(); });
-        getToolbar().addCommandToSideMenu("List des offres", null, ev->{ new ListOffres(this).show(); });
 
-        btnListTasks.addActionListener(e-> new ListOffres(this).show());
-        addAll(btnAddTask,btnListTasks);
+        btnMonAbonnement.addActionListener(e-> new MonAbonnement(this).show());
+        btnListOffres.addActionListener(e-> new ListOffres(this).show());
+        addAll(btnMonAbonnement,btnListOffres);
     }
 }

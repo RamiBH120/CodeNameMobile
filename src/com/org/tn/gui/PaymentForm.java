@@ -41,8 +41,12 @@ public class PaymentForm extends Form {
         combo.setRenderer(new GenericListCellRenderer<>(new MultiButton(), new MultiButton()));
         Button btnsub = new Button();
         Abonnement subexist = ServiceAbonnement.getInstance().getAbonnementByUserOffre(1,offre.getId());
+        System.out.println("sub is "+subexist);
         if (subexist == null) btnsub.setText("S'abonner");
-        else btnsub.setVisible(false);
+        else {
+            btnsub.setText("Vous êtes déjà abonné à cette offre!.");
+            btnsub.setEnabled(false);
+        }
         btnsub.addActionListener(e->{
             if (Dialog.show("Confirmation", "Voulez vous vous abonner à cette offre "+offre.getType()+'?', "Oui", "Non")) {
                 ServiceAbonnement.getInstance().stripePayment(combo.getSelectedItem().get("Line1").toString(),(Double) combo.getSelectedItem().get("Line2"));
