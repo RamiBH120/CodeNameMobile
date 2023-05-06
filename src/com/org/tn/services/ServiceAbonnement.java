@@ -33,16 +33,53 @@ public class ServiceAbonnement {
         return instance;
     }
 
-    /*public boolean addAbonnement(Abonnement t) {
-
-        String name = t.getName();
-        int status =  t.getStatus();
-
-        //String url = Statics.BASE_URL + "create?name=" + t.getName() + "&status=" + t.getStatus();
-        String url = Statics.BASE_URL + "create/" + status + "/" + name;
+    public Abonnement getAbonnementByUser(int iduser) {
+        final Abonnement[] abonnement = {new Abonnement()};
+        String url = Statics.BASE_URL + "abonnements/existAbonnementByUser?iduser="+iduser;
 
         req.setUrl(url);
         req.setPost(false);
+
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                abonnement[0] =parseAbonnement(new String(req.getResponseData()));
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return abonnement[0];
+    }
+
+    public Abonnement getAbonnementByUserOffre(int iduser,int idoffre) {
+        final Abonnement[] abonnement = {new Abonnement()};
+        String url = Statics.BASE_URL + "abonnements/existAbonnementByUserOffre?iduser="+iduser+"&idoffre="+idoffre;
+
+        req.setUrl(url);
+        req.setPost(false);
+
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                byte[] data = (byte[]) evt.getMetaData();
+                if (data != null) {
+                    abonnement[0] = parseAbonnement(new String(data));
+                    if(abonnement[0]==null) System.out.println("Cannot parse object of abonnement");
+                }
+                else System.out.println("Response data is null");
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return abonnement[0];
+    }
+
+    public boolean addAbonnement(int idoffre,int iduser,String type, double prix) {
+
+        String url = Statics.BASE_URL + "abonnements/add?idoffre="+idoffre+"&iduser="+iduser+"&type="+type+"&prix="+prix;
+
+        req.setUrl(url);
+        req.setPost(true);
 
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -53,7 +90,40 @@ public class ServiceAbonnement {
         });
         NetworkManager.getInstance().addToQueueAndWait(req);
         return resultOK;
-    }*/
+    }
+
+    public Abonnement parseAbonnement(String jsonText) {
+        Abonnement abonnement=null;
+        try {
+            JSONParser j = new JSONParser();
+            Map<String, Object> abonnementJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
+            if( abonnementJson.get("data") instanceof Map){
+                Map<String, Object> obj = (Map<String, Object>) abonnementJson.get("data");
+                abonnement = new Abonnement();
+                abonnement.setId((int) Float.parseFloat(obj.get("id").toString()));
+                if (obj.get("user") == null) {
+                    abonnement.setUser("null");
+                } else {
+                    abonnement.setUser(obj.get("user").toString());
+                }
+                if (obj.get("offre") == null) {
+                    abonnement.setOffre("");
+                } else {
+                    abonnement.setOffre(obj.get("offre").toString());
+                }
+                abonnement.setType(obj.get("type").toString());
+                abonnement.setPrix((int) Float.parseFloat(obj.get("prix").toString()));
+                abonnement.setDateDebut(DateHelper.dateFromLongFormat(obj.get("dateDebut").toString()));
+                abonnement.setDateFin(DateHelper.dateFromLongFormat(obj.get("dateFin").toString()));
+
+            }
+            else System.out.println("Could not read from json");
+
+        } catch (IOException | ParseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return abonnement;
+    }
 
     public ArrayList<Abonnement> parseAbonnements(String jsonText) {
         try {
@@ -104,19 +174,10 @@ public class ServiceAbonnement {
         return Abonnements;
     }
 
-    public String stripePayment() {
-        String url = Statics.BASE_URL + "abonnements/checkout/";
+    public void stripePayment(String type,double prix) {
+        String url = Statics.BASE_URL + "abonnements/stripe/create-charge?stripeKey=sk_test_51MfrUJCFMOW49kAFTbESKgCT2eFqsze1SJ18WHIRNa7thrhtBprnaL9qZwiDtapzZZxWuuI8DvvcicFolagbl7q7005gJm14xW&type="+type+"&prix="+prix;
         req.setUrl(url);
         req.setPost(false);
-        req.addArgument("id","1");
-        req.addArgument("type","Mensuel");
-        req.addArgument("prix","15");
-        req.addArgument("apiKey","sk_test_51MfrUJCFMOW49kAFTbESKgCT2eFqsze1SJ18WHIRNa7thrhtBprnaL9qZwiDtapzZZxWuuI8DvvcicFolagbl7q7005gJm14xW");
-        /*
-        req.addRequestHeader("id","1");
-        req.addRequestHeader("type","Mensuel");
-        req.addRequestHeader("prix","15");*/
-
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -125,6 +186,5 @@ public class ServiceAbonnement {
             }
         });
         NetworkManager.getInstance().addToQueueAndWait(req);
-        return htmlres;
     }
 }

@@ -9,19 +9,18 @@ import com.codename1.ui.layouts.BoxLayout;
 public class HomeForm extends Form {
     public HomeForm() {
 
-        setTitle("Home");
+        setTitle("Acceuil");
         setLayout(BoxLayout.y());
 
-        add(new Label("Choisir une option"));
-        Button btnAddTask = new Button("Mon abonnement");
-        Button btnListTasks = new Button("List des offres");
 
-        getToolbar().addCommandToSideMenu("Mon abonnement", null, ev->{ new Form1(this).show(); });
-        getToolbar().addCommandToSideMenu("List des offres", null, ev->{ new ListOffres(this).show(); });
 
-        btnListTasks.addActionListener(e-> new ListOffres(this).show());
-        addAll(btnAddTask,btnListTasks);
 
+        getToolbar().addCommandToSideMenu("Profil", null, ev->{ ; });
+        getToolbar().addCommandToSideMenu("Oeuvres", null, ev->{ ; });
+        getToolbar().addCommandToSideMenu("Evenements", null, ev->{ ; });
+        getToolbar().addCommandToSideMenu("Ateliers", null, ev->{ ; });
+        getToolbar().addCommandToSideMenu("Abonnement", null, ev->{ new AbonnementForm(this).show(); });
+        getToolbar().addCommandToSideMenu("Avis", null, ev->{ ; });
 
     }
 }
